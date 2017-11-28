@@ -1,5 +1,10 @@
 # sz2pdf
 
+Files needed:
+* config.properties
+* client_secrets.json
+
+
 ## Properties
 
 | Property | Value |

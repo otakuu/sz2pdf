@@ -169,6 +169,9 @@ public class LoginAndGetSzPdf {
 			if (swiperPageInfoListEntry.getPageNo() == 1)
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("REGION"))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("STADT SOLOTHURN"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
@@ -179,6 +182,9 @@ public class LoginAndGetSzPdf {
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("TODESANZEIGEN"))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
+			if (swiperPageInfoListEntry.getSectionName().equals("leben u0026 wissen"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 		}
 

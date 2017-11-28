@@ -2,3 +2,4 @@
 /resources/client_secrets.json
 /.classpath
 /target
+/src/main/java/sz2pdf/Memeory.java

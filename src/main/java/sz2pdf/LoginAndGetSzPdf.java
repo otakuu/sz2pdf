@@ -32,6 +32,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import sz2pdf.beans.SwiperPageInfoListEntry;
+import sz2pdf.beans.SzType;
 
 public class LoginAndGetSzPdf {
 
@@ -164,11 +165,14 @@ public class LoginAndGetSzPdf {
 
 		for (SwiperPageInfoListEntry swiperPageInfoListEntry : pageList) {
 
-			// page 1, stadt solothurn, todesanzeigen
+			// page 1, stadt solothurn, kanton solothurn, todesanzeigen
 			if (swiperPageInfoListEntry.getPageNo() == 1)
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("STADT SOLOTHURN"))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("KANTON SOLOTHURN"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
 			if (swiperPageInfoListEntry.getClassificationName().toUpperCase().equals("TODESANZEIGEN"))
@@ -255,7 +259,7 @@ public class LoginAndGetSzPdf {
 
 	private void getSecureCookie() throws IOException {
 		final HttpGet httpget = new HttpGet("https://epaper.azmedien.ch/omni/epaper/index");
-		httpget.addHeader("Cookie", sessionId);
+		// httpget.addHeader("Cookie", sessionId);
 
 		final CloseableHttpResponse response1 = httpclient.execute(httpget);
 

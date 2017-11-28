@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 
 import sz2pdf.beans.SwiperPageInfoListEntry;
@@ -27,6 +28,7 @@ public class TestJsonParser {
 					obj4.get("SectionName").toString()));
 		}
 
+		System.out.println(niceArray);
 		System.out.println(pageList);
 
 		StringBuilder sb = new StringBuilder();
@@ -37,10 +39,16 @@ public class TestJsonParser {
 			if (swiperPageInfoListEntry.getPageNo() == 1)
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("STADT SOLOTHURN"))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("KANTON SOLOTHURN"))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
 			if (swiperPageInfoListEntry.getClassificationName().toUpperCase().equals("TODESANZEIGEN"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
-			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("STADT SOLOTHURN"))
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("TODESANZEIGEN"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 		}
 
@@ -48,6 +56,8 @@ public class TestJsonParser {
 		sb.setLength(sb.length() - 1);
 
 		System.out.println(sb.toString());
+
+		Assert.assertEquals(8, sb.toString().split(",").length);
 
 	}
 

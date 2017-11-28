@@ -58,6 +58,8 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import sz2pdf.beans.SzType;
+
 public class MainSz2Pdf {
 
 	final static Logger LOGGER = Logger.getLogger(MainSz2Pdf.class);
@@ -90,6 +92,7 @@ public class MainSz2Pdf {
 			LOGGER.info("recipients: " + appProps.getProperty("recipients"));
 			LOGGER.info("google email: " + appProps.getProperty("googleEmail"));
 			LOGGER.info("google password: " + appProps.getProperty("googlePassword"));
+			LOGGER.info("google drive folderId: " + appProps.getProperty("googleFolderId"));
 
 			googleEmail = appProps.getProperty("googleEmail");
 			googlePassword = appProps.getProperty("googlePassword");
@@ -116,7 +119,6 @@ public class MainSz2Pdf {
 			String filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
 			String filepathMini = loginAndGetPdfSZ.getPdf(SzType.Mini);
 
-			// String filepath = "c:\\temp\\sz\\2017_11_25_SZSZ.pdf";
 			LOGGER.info("Pdf generated: " + filepathAll + " (" + new File(filepathAll).length() / 1000000 + " MB)");
 
 			// compress
@@ -125,7 +127,8 @@ public class MainSz2Pdf {
 			// gmail can only send 25MB
 			if ((new File(filepathAll).length() / 1000000) > 25) { // max. 25 MB
 				// upload to google drive
-				UploadGoogleDrive myUploadGoogleDrive = new UploadGoogleDrive(filepathAll);
+				UploadGoogleDrive myUploadGoogleDrive = new UploadGoogleDrive(filepathAll,
+						appProps.getProperty("googleFolderId"));
 				LOGGER.info("Google Drive Link: " + myUploadGoogleDrive.getUploadFileLink());
 				sendMailWithLink(myUploadGoogleDrive.getUploadFileLink());
 			} else {

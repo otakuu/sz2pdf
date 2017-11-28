@@ -50,10 +50,8 @@ public class UploadGoogleDrive {
 	 */
 	private static FileDataStoreFactory dataStoreFactory;
 
-	/** Global instance of the HTTP transport. */
 	private static HttpTransport httpTransport;
 
-	/** Global instance of the JSON factory. */
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
 	/** Global Drive API client. */
@@ -80,7 +78,7 @@ public class UploadGoogleDrive {
 
 	private File uploadedFile;
 
-	public UploadGoogleDrive(String filename) {
+	public UploadGoogleDrive(String filename, String folderId) {
 
 		try {
 			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
@@ -93,7 +91,7 @@ public class UploadGoogleDrive {
 
 			// run commands
 			LOGGER.info("Starting Google Drive Upload");
-			setUploadedFile(uploadFile(new java.io.File(filename)));
+			setUploadedFile(uploadFile(new java.io.File(filename), folderId));
 
 			LOGGER.info("Success!");
 
@@ -102,11 +100,10 @@ public class UploadGoogleDrive {
 		}
 	}
 
-	/** Uploads a file */
-	private static File uploadFile(java.io.File uploadFile) throws IOException {
+	private static File uploadFile(java.io.File uploadFile, String folderId) throws IOException {
 		File fileMetadata = new File();
 		fileMetadata.setName(uploadFile.getName());
-		fileMetadata.setParents(Collections.singletonList("1z2KinhvbN2WrMT5BK4cucE9GbEksMYxa"));
+		fileMetadata.setParents(Collections.singletonList(folderId));
 
 		FileContent mediaContent = new FileContent("application/pdf", uploadFile);
 
@@ -124,7 +121,6 @@ public class UploadGoogleDrive {
 	}
 
 	public String getUploadFileLink() {
-
 		return "https://drive.google.com/file/d/" + uploadedFile.getId() + "/view";
 	}
 

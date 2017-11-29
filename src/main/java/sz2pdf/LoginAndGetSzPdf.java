@@ -184,7 +184,7 @@ public class LoginAndGetSzPdf {
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("TODESANZEIGEN"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
-			if (swiperPageInfoListEntry.getSectionName().equals("leben u0026 wissen"))
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("leben u0026 wissen".toUpperCase()))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 		}
 
@@ -194,7 +194,7 @@ public class LoginAndGetSzPdf {
 		return sb.toString();
 	}
 
-	private void getCurrentPages(HttpUriRequest login) throws ClientProtocolException, IOException {
+	public void getCurrentPages(HttpUriRequest login) throws ClientProtocolException, IOException {
 		final CloseableHttpResponse getCookieResponse = httpclient.execute(login);
 
 		LOGGER.info("Request: " + login.getURI() + " - statusCode: " + getCookieResponse.getStatusLine());
@@ -225,7 +225,7 @@ public class LoginAndGetSzPdf {
 
 	}
 
-	private void getCurrentIssueId(final HttpUriRequest login) throws ClientProtocolException, IOException {
+	public void getCurrentIssueId(final HttpUriRequest login) throws ClientProtocolException, IOException {
 		final CloseableHttpResponse getCookieResponse = httpclient.execute(login);
 
 		LOGGER.info("Request: " + login.getURI() + " - statusCode: " + getCookieResponse.getStatusLine());

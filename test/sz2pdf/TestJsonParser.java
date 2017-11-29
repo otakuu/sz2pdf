@@ -35,8 +35,11 @@ public class TestJsonParser {
 
 		for (SwiperPageInfoListEntry swiperPageInfoListEntry : pageList) {
 
-			// page 1, stadt solothur, todesanzeigen
+			// page 1, stadt solothurn, kanton solothurn, todesanzeigen
 			if (swiperPageInfoListEntry.getPageNo() == 1)
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("REGION"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("STADT SOLOTHURN"))
@@ -50,6 +53,9 @@ public class TestJsonParser {
 
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("TODESANZEIGEN"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("leben u0026 wissen".toUpperCase()))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 		}
 
 		// delete last comma
@@ -57,7 +63,7 @@ public class TestJsonParser {
 
 		System.out.println(sb.toString());
 
-		Assert.assertEquals(8, sb.toString().split(",").length);
+		Assert.assertEquals(9, sb.toString().split(",").length);
 
 	}
 

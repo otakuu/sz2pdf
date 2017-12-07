@@ -165,7 +165,8 @@ public class LoginAndGetSzPdf {
 
 		for (SwiperPageInfoListEntry swiperPageInfoListEntry : pageList) {
 
-			// page 1, stadt solothurn, kanton solothurn, todesanzeigen
+			// page 1, leben&wissen, stadt solothurn, kanton solothurn,
+			// todesanzeigen, a-z
 			if (swiperPageInfoListEntry.getPageNo() == 1)
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
@@ -186,6 +187,10 @@ public class LoginAndGetSzPdf {
 
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("leben u0026 wissen".toUpperCase()))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("A bis Z".toUpperCase()))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
 		}
 
 		// delete last comma

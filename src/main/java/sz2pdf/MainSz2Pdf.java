@@ -35,6 +35,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -145,6 +148,14 @@ public class MainSz2Pdf {
 			LOGGER.info("*************************");
 			LOGGER.info("******* Email sent ******");
 			LOGGER.info("*************************");
+
+			// delete files
+			Path path = Paths.get(filepathAll);
+			Files.delete(path);
+
+			path = Paths.get(filepathMini);
+			Files.delete(path);
+
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}

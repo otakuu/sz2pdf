@@ -188,6 +188,9 @@ public class LoginAndGetSzPdf {
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("leben u0026 wissen".toUpperCase()))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("morgen".toUpperCase()))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("A bis Z".toUpperCase()))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 

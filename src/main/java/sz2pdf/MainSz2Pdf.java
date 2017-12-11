@@ -119,8 +119,8 @@ public class MainSz2Pdf {
 			loginAndGetPdfSZ.setPath(appProps.getProperty("pdfPath"));
 			loginAndGetPdfSZ.getSecureSessionIdAndPages();
 
-			String filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
 			String filepathMini = loginAndGetPdfSZ.getPdf(SzType.Mini);
+			String filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
 
 			LOGGER.info("Pdf generated: " + filepathAll + " (" + new File(filepathAll).length() / 1000000 + " MB)");
 

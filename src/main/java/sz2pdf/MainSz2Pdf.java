@@ -70,6 +70,8 @@ public class MainSz2Pdf {
 	private static Properties props;
 	private static String googleEmail;
 	private static String googlePassword;
+	private static String filepathMini;
+	private static String filepathAll;
 
 	public static void main(final String[] args) {
 
@@ -119,10 +121,28 @@ public class MainSz2Pdf {
 			loginAndGetPdfSZ.setPath(appProps.getProperty("pdfPath"));
 			loginAndGetPdfSZ.getSecureSessionIdAndPages();
 
-			String filepathMini = loginAndGetPdfSZ.getPdf(SzType.Mini);
-			String filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
+			for (int i = 1; i <= 4; i++) { // 4 retries
 
-			LOGGER.info("Pdf generated: " + filepathAll + " (" + new File(filepathAll).length() / 1000000 + " MB)");
+				filepathMini = loginAndGetPdfSZ.getPdf(SzType.Mini);
+				filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
+
+				LOGGER.info("Pdf generated: " + filepathAll + " (" + new File(filepathAll).length() / 1000000 + " MB)");
+
+				if (new File(filepathAll).length() == 0) {
+
+					LOGGER.error("Filesize is zero, retry in 1h: " + filepathAll);
+
+					Thread.sleep(30 * 60 * 1000); // 30 min
+					filepathMini = loginAndGetPdfSZ.getPdf(SzType.Mini);
+					filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
+				}
+
+			}
+
+			// after 4 retries still 0? then exit
+			if (new File(filepathAll).length() == 0) {
+				return;
+			}
 
 			// compress
 			compressPdf(filepathAll);
@@ -140,8 +160,6 @@ public class MainSz2Pdf {
 				sendMailWithPdf(file, "Solothurner Zeitung PDF");
 			}
 
-			// compress and send mini
-			compressPdf(filepathMini);
 			File fileMini = new File(filepathMini);
 			sendMailWithPdf(fileMini, "Solothurner Zeitung PDF - Mini");
 

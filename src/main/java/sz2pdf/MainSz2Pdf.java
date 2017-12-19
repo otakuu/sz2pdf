@@ -123,18 +123,26 @@ public class MainSz2Pdf {
 
 			for (int i = 1; i <= 4; i++) { // 4 retries
 
-				filepathMini = loginAndGetPdfSZ.getPdf(SzType.Mini);
-				filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
-
-				LOGGER.info("Pdf generated: " + filepathAll + " (" + new File(filepathAll).length() / 1000000 + " MB)");
-
-				if (new File(filepathAll).length() == 0) {
-
-					LOGGER.error("Filesize is zero, retry in 1h: " + filepathAll);
-
-					Thread.sleep(30 * 60 * 1000); // 30 min
+				try {
 					filepathMini = loginAndGetPdfSZ.getPdf(SzType.Mini);
 					filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
+
+					LOGGER.info("Try to get Pdf. Nbr of attempt: " + i + "/4");
+					LOGGER.info(
+							"Pdf generated: " + filepathAll + " (" + new File(filepathAll).length() / 1000000 + " MB)");
+
+					if (new File(filepathAll).length() == 0) {
+
+						LOGGER.error("Filesize is zero, retry in 30mih: ");
+						Thread.sleep(30 * 60 * 1000); // 30 min
+
+					} else {
+						break;
+					}
+				} catch (Exception ex) {
+					LOGGER.error("Error, retry in 30min: ", ex);
+					Thread.sleep(30 * 60 * 1000); // 30 min
+
 				}
 
 			}
@@ -174,7 +182,9 @@ public class MainSz2Pdf {
 			path = Paths.get(filepathMini);
 			Files.delete(path);
 
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 

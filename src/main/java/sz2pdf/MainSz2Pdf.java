@@ -1,32 +1,3 @@
-/*==============================================================================
- *
- * COPYRIGHT
- *
- * INTERSYS AG
- * Luzernstrasse 9
- * 4528 Zuchwil
- * SWITZERLAND
- *
- * www.intersys.ch
- * info@intersys.ch
- *
- * tel int + 41 32 625 76 76
- * fax int + 41 32 625 76 70
- *
- * The copyright to the computer program(s) herein
- * is the property of Intersys AG, Switzerland.
- * The program(s) may be used and/or copied only with
- * the written permission of Intersys AG or in accordance with
- * the terms and conditions stipulated in the agreement/contract
- * under which the program(s) have been supplied.
- *==============================================================================
- *
- * Original author : Allemann
- * Creation date   : Jan 19, 2017
- *
- *==============================================================================
- */
-
 package sz2pdf;
 
 import java.io.File;
@@ -131,7 +102,7 @@ public class MainSz2Pdf {
 					LOGGER.info(
 							"Pdf generated: " + filepathAll + " (" + new File(filepathAll).length() / 1000000 + " MB)");
 
-					if (new File(filepathAll).length() == 0) {
+					if (new File(filepathAll).length() / 1000000 == 0) {
 
 						LOGGER.error("Filesize is zero, retry in 30mih: ");
 						Thread.sleep(30 * 60 * 1000); // 30 min

@@ -42,7 +42,7 @@ public class MainSz2Pdf {
 	private static String googleEmail;
 	private static String googlePassword;
 	private static String filepathMini;
-	private static String filepathAll;
+	// private static String filepathAll;
 
 	public static void main(final String[] args) {
 
@@ -92,52 +92,58 @@ public class MainSz2Pdf {
 			loginAndGetPdfSZ.setPath(appProps.getProperty("pdfPath"));
 			loginAndGetPdfSZ.getSecureSessionIdAndPages();
 
-			for (int i = 1; i <= 4; i++) { // 4 retries
+			int initDelay = 1;
+
+			for (int i = 1; i <= 10; i++) { // 10 retries
+
+				initDelay = (int) Math.ceil(initDelay * 1.6);
 
 				try {
 					filepathMini = loginAndGetPdfSZ.getPdf(SzType.Mini);
-					filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
+					// filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
 
-					LOGGER.info("Try to get Pdf. Nbr of attempt: " + i + "/4");
-					LOGGER.info(
-							"Pdf generated: " + filepathAll + " (" + new File(filepathAll).length() / 1000000 + " MB)");
+					LOGGER.info("Try to get Pdf. Nbr of attempt: " + i + "/10");
+					LOGGER.info("Pdf generated: " + filepathMini + " (" + new File(filepathMini).length() / 1000000
+							+ " MB)");
 
-					if (new File(filepathAll).length() / 1000000 == 0) {
+					if (new File(filepathMini).length() / 1000000 < 1) {
 
-						LOGGER.error("Filesize is zero, retry in 30mih: ");
-						Thread.sleep(30 * 60 * 1000); // 30 min
+						LOGGER.error("Filesize is zero, retry in " + initDelay + " min: ");
+						Thread.sleep(initDelay * 60 * 1000); // 30 min
 
 					} else {
 						break;
 					}
 				} catch (Exception ex) {
 					LOGGER.error("Error, retry in 30min: ", ex);
-					Thread.sleep(30 * 60 * 1000); // 30 min
-
+					Thread.sleep(initDelay * 60 * 1000); // 30 min
 				}
 
 			}
 
-			// after 4 retries still 0? then exit
-			if (new File(filepathAll).length() == 0) {
+			// after 10 retries still 0? then exit
+			if (new File(filepathMini).length() / 1000000 < 1) {
 				return;
 			}
 
 			// compress
-			compressPdf(filepathAll);
-
-			// gmail can only send 25MB
-			if ((new File(filepathAll).length() / 1000000) > 25) { // max. 25 MB
-				// upload to google drive
-				UploadGoogleDrive myUploadGoogleDrive = new UploadGoogleDrive(filepathAll,
-						appProps.getProperty("googleFolderId"));
-				LOGGER.info("Google Drive Link: " + myUploadGoogleDrive.getUploadFileLink());
-				sendMailWithLink(myUploadGoogleDrive.getUploadFileLink());
-			} else {
-				// send pdf
-				File file = new File(filepathAll);
-				sendMailWithPdf(file, "Solothurner Zeitung PDF");
-			}
+			// compressPdf(filepathAll);
+			//
+			// // gmail can only send 25MB
+			// if ((new File(filepathAll).length() / 1000000) > 25) { // max. 25
+			// MB
+			// // upload to google drive
+			// UploadGoogleDrive myUploadGoogleDrive = new
+			// UploadGoogleDrive(filepathAll,
+			// appProps.getProperty("googleFolderId"));
+			// LOGGER.info("Google Drive Link: " +
+			// myUploadGoogleDrive.getUploadFileLink());
+			// sendMailWithLink(myUploadGoogleDrive.getUploadFileLink());
+			// } else {
+			// // send pdf
+			// File file = new File(filepathAll);
+			// sendMailWithPdf(file, "Solothurner Zeitung PDF");
+			// }
 
 			File fileMini = new File(filepathMini);
 			sendMailWithPdf(fileMini, "Solothurner Zeitung PDF - Mini");
@@ -147,10 +153,10 @@ public class MainSz2Pdf {
 			LOGGER.info("*************************");
 
 			// delete files
-			Path path = Paths.get(filepathAll);
-			Files.delete(path);
+			// Path path = Paths.get(filepathAll);
+			// Files.delete(path);
 
-			path = Paths.get(filepathMini);
+			Path path = Paths.get(filepathMini);
 			Files.delete(path);
 
 		} catch (

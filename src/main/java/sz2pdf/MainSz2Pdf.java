@@ -109,14 +109,14 @@ public class MainSz2Pdf {
 					if (new File(filepathMini).length() / 1000000 < 1) {
 
 						LOGGER.error("Filesize is zero, retry in " + initDelay + " min: ");
-						Thread.sleep(initDelay * 60 * 1000); // 30 min
+						Thread.sleep(initDelay * 60 * 1000);
 
 					} else {
 						break;
 					}
 				} catch (Exception ex) {
-					LOGGER.error("Error, retry in 30min: ", ex);
-					Thread.sleep(initDelay * 60 * 1000); // 30 min
+					LOGGER.error("Error, retry in " + initDelay + "min: ", ex);
+					Thread.sleep(initDelay * 60 * 1000);
 				}
 
 			}

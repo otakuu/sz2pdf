@@ -154,7 +154,8 @@ public class LoginAndGetSzPdf {
 		}
 
 		// delete last comma
-		sb.setLength(sb.length() - 1);
+		if (sb.length() >= 1)
+			sb.setLength(sb.length() - 1);
 
 		return sb.toString();
 	}
@@ -197,7 +198,8 @@ public class LoginAndGetSzPdf {
 		}
 
 		// delete last comma
-		sb.setLength(sb.length() - 1);
+		if (sb.length() >= 1)
+			sb.setLength(sb.length() - 1);
 
 		return sb.toString();
 	}

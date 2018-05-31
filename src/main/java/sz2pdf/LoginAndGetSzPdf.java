@@ -192,6 +192,9 @@ public class LoginAndGetSzPdf {
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("morgen".toUpperCase()))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("forum".toUpperCase()))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("A bis Z".toUpperCase()))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 

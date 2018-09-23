@@ -67,7 +67,7 @@ public class MainSz2Pdf {
 			LOGGER.info("editionString: " + appProps.getProperty("editionString"));
 			LOGGER.info("recipients: " + appProps.getProperty("recipients"));
 			LOGGER.info("google email: " + appProps.getProperty("googleEmail"));
-			LOGGER.info("google password: " + appProps.getProperty("googlePassword"));
+			LOGGER.info("google password: ******");
 			LOGGER.info("google drive folderId: " + appProps.getProperty("googleFolderId"));
 
 			googleEmail = appProps.getProperty("googleEmail");
@@ -90,7 +90,6 @@ public class MainSz2Pdf {
 			loginAndGetPdfSZ.setEditionId(Integer.parseInt(appProps.getProperty("editionId")));
 			loginAndGetPdfSZ.setEditionString(appProps.getProperty("editionString"));
 			loginAndGetPdfSZ.setPath(appProps.getProperty("pdfPath"));
-			loginAndGetPdfSZ.getSecureSessionIdAndPages();
 
 			int initDelay = 1;
 
@@ -99,8 +98,9 @@ public class MainSz2Pdf {
 				initDelay = (int) Math.ceil(initDelay * 1.6);
 
 				try {
+
+					loginAndGetPdfSZ.getSecureSessionIdAndPages();
 					filepathMini = loginAndGetPdfSZ.getPdf(SzType.Mini);
-					// filepathAll = loginAndGetPdfSZ.getPdf(SzType.All);
 
 					LOGGER.info("Try to get Pdf. Nbr of attempt: " + i + "/10");
 					LOGGER.info("Pdf generated: " + filepathMini + " (" + new File(filepathMini).length() / 1000000

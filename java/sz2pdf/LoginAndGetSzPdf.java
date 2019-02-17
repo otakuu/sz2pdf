@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -133,12 +135,10 @@ public class LoginAndGetSzPdf {
 
 		InputStream is = entity.getContent();
 		filePath = PDF_DIR + dateFormat.format(date) + "_" + editionString + "_" + szType + ".pdf";
-		FileOutputStream fos = new FileOutputStream(new File(filePath));
-		int inByte;
-		while ((inByte = is.read()) != -1)
-			fos.write(inByte);
+		OutputStream outputStream = new FileOutputStream(filePath);
+		IOUtils.copy(is, outputStream);
+		outputStream.close();
 		is.close();
-		fos.close();
 
 		return filePath;
 

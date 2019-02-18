@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -47,12 +48,12 @@ public class MainSz2Pdf {
 	public static void main(final String[] args) {
 
 		try {
-			LOGGER.info("*************************");
-			LOGGER.info("***** sz2pdf started ****");
-			LOGGER.info("*************************");
+			LOGGER.info("**************************");
+			LOGGER.info("***** sz2pdf started *****");
+			LOGGER.info("**************************");
 
 			// get properties
-			LOGGER.info("****** Properties *******");
+			LOGGER.info("******* Properties *******");
 
 			String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
 			String appConfigPath = rootPath + "config.properties";
@@ -148,9 +149,9 @@ public class MainSz2Pdf {
 			File fileMini = new File(filepathMini);
 			sendMailWithPdf(fileMini, "Solothurner Zeitung PDF - Mini");
 
-			LOGGER.info("*************************");
-			LOGGER.info("******* Email sent ******");
-			LOGGER.info("*************************");
+			LOGGER.info("**************************");
+			LOGGER.info("******* Email sent *******");
+			LOGGER.info("**************************");
 
 			// delete files
 			// Path path = Paths.get(filepathAll);
@@ -227,6 +228,17 @@ public class MainSz2Pdf {
 
 		BodyPart messageBodyPart = new MimeBodyPart();
 		messageBodyPart.setText("Enjoy your journal!");
+
+		Calendar myDate = Calendar.getInstance(); // set this up however you need it.
+		int dow = myDate.get(Calendar.DAY_OF_WEEK);
+
+		// amtsblatt
+		if (dow == Calendar.FRIDAY) {
+			String url = "https://www.so.ch/fileadmin/internet/staatskanzlei/stk-regierungsdienste/pdf/amtsblatt/Amtsblatt_"
+					+ myDate.get(Calendar.WEEK_OF_YEAR) + "-" + myDate.get(Calendar.YEAR) + ".pdf";
+			LOGGER.info("Amtsblatt Url: " + url);
+			messageBodyPart.setText("Amtsblatt online: " + url);
+		}
 
 		// Add attachment
 		Multipart multipart = new MimeMultipart();

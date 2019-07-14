@@ -277,7 +277,6 @@ public class LoginAndGetSzPdf {
 
 	private void getSecureCookie() throws IOException {
 		final HttpGet httpget = new HttpGet(loginUrl + "/omni/epaper/index");
-		// httpget.addHeader("Cookie", sessionId);
 
 		final CloseableHttpResponse response1 = httpclient.execute(httpget);
 

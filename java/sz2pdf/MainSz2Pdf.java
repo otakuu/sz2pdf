@@ -2,10 +2,7 @@ package sz2pdf;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,11 +25,6 @@ import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfWriter;
-
 import sz2pdf.beans.SzType;
 
 public class MainSz2Pdf {
@@ -43,7 +35,6 @@ public class MainSz2Pdf {
 	private static String googleEmail;
 	private static String googlePassword;
 	private static String filepathMini;
-	// private static String filepathAll;
 
 	public static void main(final String[] args) {
 
@@ -128,25 +119,6 @@ public class MainSz2Pdf {
 				return;
 			}
 
-			// compress
-			// compressPdf(filepathAll);
-			//
-			// // gmail can only send 25MB
-			// if ((new File(filepathAll).length() / 1000000) > 25) { // max. 25
-			// MB
-			// // upload to google drive
-			// UploadGoogleDrive myUploadGoogleDrive = new
-			// UploadGoogleDrive(filepathAll,
-			// appProps.getProperty("googleFolderId"));
-			// LOGGER.info("Google Drive Link: " +
-			// myUploadGoogleDrive.getUploadFileLink());
-			// sendMailWithLink(myUploadGoogleDrive.getUploadFileLink());
-			// } else {
-			// // send pdf
-			// File file = new File(filepathAll);
-			// sendMailWithPdf(file, "Solothurner Zeitung PDF");
-			// }
-
 			File fileMini = new File(filepathMini);
 			sendMailWithPdf(fileMini, "Solothurner Zeitung PDF - Mini");
 
@@ -155,9 +127,6 @@ public class MainSz2Pdf {
 			LOGGER.info("**************************");
 
 			// delete files
-			// Path path = Paths.get(filepathAll);
-			// Files.delete(path);
-
 			Path path = Paths.get(filepathMini);
 			Files.delete(path);
 
@@ -166,48 +135,6 @@ public class MainSz2Pdf {
 		Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
-
-	}
-
-	private static void compressPdf(String filepath) throws IOException, FileNotFoundException, DocumentException {
-		PdfReader reader = new PdfReader(new FileInputStream(filepath));
-		PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(filepath), PdfWriter.VERSION_1_5);
-		stamper.setFullCompression();
-		stamper.close();
-
-		LOGGER.info("Pdf compressed: " + filepath + " (" + new File(filepath).length() / 1000 + " KB)");
-
-	}
-
-	private static void sendMailWithLink(String uploadFileLink)
-			throws MessagingException, UnsupportedEncodingException {
-
-		Session session = Session.getInstance(props, null);
-		MimeMessage message = new MimeMessage(session);
-
-		// Create the email addresses involved
-		InternetAddress from = new InternetAddress(googleEmail);
-		message.setSubject("Solothurner Zeitung PDF");
-		from.setPersonal("sz2pdf Service");
-		message.setFrom(from);
-
-		String[] recList = recipents.split(",");
-		for (String rec : recList) {
-			message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(rec));
-		}
-
-		BodyPart messageBodyPart = new MimeBodyPart();
-		messageBodyPart.setText(uploadFileLink);
-
-		Multipart multipart = new MimeMultipart();
-		multipart.addBodyPart(messageBodyPart);
-		message.setContent(multipart);
-
-		// Send message
-		Transport transport = session.getTransport("smtp");
-		transport.connect("smtp.gmail.com", googleEmail, googlePassword);
-		LOGGER.info("Sending mail: " + transport.toString());
-		transport.sendMessage(message, message.getAllRecipients());
 
 	}
 

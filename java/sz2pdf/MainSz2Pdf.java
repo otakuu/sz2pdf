@@ -69,7 +69,6 @@ public class MainSz2Pdf {
 			LOGGER.info("recipients: " + appProps.getProperty("recipients"));
 			LOGGER.info("google email: " + appProps.getProperty("googleEmail"));
 			LOGGER.info("google password: ******");
-			LOGGER.info("google drive folderId: " + appProps.getProperty("googleFolderId"));
 
 			googleEmail = appProps.getProperty("googleEmail");
 			googlePassword = appProps.getProperty("googlePassword");
@@ -86,6 +85,8 @@ public class MainSz2Pdf {
 
 			// get pdf
 			final LoginAndGetSzPdf loginAndGetPdfSZ = new LoginAndGetSzPdf();
+			loginAndGetPdfSZ.setBaseUrl(appProps.getProperty("baseUrl"));
+			loginAndGetPdfSZ.setLoginUrl(appProps.getProperty("loginUrl"));
 			loginAndGetPdfSZ.setUsername(appProps.getProperty("sz_user"));
 			loginAndGetPdfSZ.setPassword(appProps.getProperty("sz_password"));
 			loginAndGetPdfSZ.setEditionId(Integer.parseInt(appProps.getProperty("editionId")));

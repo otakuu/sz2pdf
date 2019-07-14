@@ -1,6 +1,5 @@
 package sz2pdf;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +37,10 @@ import sz2pdf.beans.SzType;
 
 public class LoginAndGetSzPdf {
 
+	private static String baseUrl;
+
+	private static String loginUrl;
+
 	private static String username;
 
 	private static String password;
@@ -71,7 +74,7 @@ public class LoginAndGetSzPdf {
 			/**
 			 * 1. get authenticated sessionId
 			 */
-			final HttpUriRequest login = RequestBuilder.post().setUri(new URI("https://epaper.azmedien.ch/omni/login/"))
+			final HttpUriRequest login = RequestBuilder.post().setUri(new URI(loginUrl + "/omni/login/"))
 					.addParameter("email", username).addParameter("password", password).build();
 
 			loginAndGetSessionId(login);
@@ -87,8 +90,7 @@ public class LoginAndGetSzPdf {
 			String xml = "{\"strEditionId\":\"" + editionId + "\"}";
 			HttpEntity entity = new ByteArrayEntity(xml.getBytes("UTF-8"));
 
-			HttpUriRequest postReq = RequestBuilder.post()
-					.setUri(new URI("https://epaper-service.azmedien.ch/EPaper/EPaper.aspx/GetIssues"))
+			HttpUriRequest postReq = RequestBuilder.post().setUri(new URI(baseUrl + "/EPaper/EPaper.aspx/GetIssues"))
 					.setEntity(entity).build();
 			postReq.addHeader("Cookie", "ASP.NET_SessionId=" + aspSessionId + "; AzmJson=" + secureCookie);
 			postReq.addHeader("Content-Type", "application/json; charset=UTF-8");
@@ -98,8 +100,7 @@ public class LoginAndGetSzPdf {
 			xml = "{kRequestedIssueId: -1, kSelectedIssueId: " + issueId + ", bSmallJpeg: false}";
 			entity = new ByteArrayEntity(xml.getBytes("UTF-8"));
 
-			postReq = RequestBuilder.post()
-					.setUri(new URI("https://epaper-service.azmedien.ch/EPaper/EPaper.aspx/GetSwiperPages"))
+			postReq = RequestBuilder.post().setUri(new URI(baseUrl + "/EPaper/EPaper.aspx/GetSwiperPages"))
 					.setEntity(entity).build();
 			postReq.addHeader("Cookie", "ASP.NET_SessionId=" + aspSessionId + "; AzmJson=" + secureCookie);
 			postReq.addHeader("Content-Type", "application/json; charset=UTF-8");
@@ -116,11 +117,9 @@ public class LoginAndGetSzPdf {
 		HttpGet httpget;
 
 		if (szType == SzType.All) {
-			httpget = new HttpGet("https://epaper-service.azmedien.ch/EPaper/CreatePDF.aspx?issue=" + issueId
-					+ "&pages=" + getAllPages());
+			httpget = new HttpGet(baseUrl + "/EPaper/CreatePDF.aspx?issue=" + issueId + "&pages=" + getAllPages());
 		} else {
-			httpget = new HttpGet("https://epaper-service.azmedien.ch/EPaper/CreatePDF.aspx?issue=" + issueId
-					+ "&pages=" + getMiniPages());
+			httpget = new HttpGet(baseUrl + "/EPaper/CreatePDF.aspx?issue=" + issueId + "&pages=" + getMiniPages());
 		}
 		httpget.addHeader("Cookie", "ASP.NET_SessionId=" + aspSessionId + "; AzmJson=" + secureCookie);
 
@@ -277,7 +276,7 @@ public class LoginAndGetSzPdf {
 	}
 
 	private void getSecureCookie() throws IOException {
-		final HttpGet httpget = new HttpGet("https://epaper.azmedien.ch/omni/epaper/index");
+		final HttpGet httpget = new HttpGet(loginUrl + "/omni/epaper/index");
 		// httpget.addHeader("Cookie", sessionId);
 
 		final CloseableHttpResponse response1 = httpclient.execute(httpget);
@@ -347,6 +346,22 @@ public class LoginAndGetSzPdf {
 
 	public void setEditionString(String editionString) {
 		LoginAndGetSzPdf.editionString = editionString;
+	}
+
+	public static String getBaseUrl() {
+		return baseUrl;
+	}
+
+	public void setBaseUrl(String baseUrl) {
+		LoginAndGetSzPdf.baseUrl = baseUrl;
+	}
+
+	public static String getLoginUrl() {
+		return loginUrl;
+	}
+
+	public void setLoginUrl(String loginUrl) {
+		LoginAndGetSzPdf.loginUrl = loginUrl;
 	}
 
 }

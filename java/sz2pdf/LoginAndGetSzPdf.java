@@ -165,8 +165,6 @@ public class LoginAndGetSzPdf {
 
 		for (SwiperPageInfoListEntry swiperPageInfoListEntry : pageList) {
 
-			// page 1, leben&wissen, stadt solothurn, kanton solothurn,
-			// todesanzeigen, a-z
 			if (swiperPageInfoListEntry.getPageNo() == 1)
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
@@ -176,6 +174,12 @@ public class LoginAndGetSzPdf {
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("STADT SOLOTHURN"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("TV UND RADIO"))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("WETTER"))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("KANTON SOLOTHURN"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
@@ -183,6 +187,9 @@ public class LoginAndGetSzPdf {
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("TODESANZEIGEN"))
+				sb.append(swiperPageInfoListEntry.getPageId() + ",");
+
+			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("KULTUR"))
 				sb.append(swiperPageInfoListEntry.getPageId() + ",");
 
 			if (swiperPageInfoListEntry.getSectionName().toUpperCase().equals("leben u0026 wissen".toUpperCase()))
